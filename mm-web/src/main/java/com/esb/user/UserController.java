@@ -60,12 +60,6 @@ public class UserController {
         // PageInfo包装结果，返回更多分页相关信息
         PageInfo<User> pi = new PageInfo<User>(result);
        
-        log.debug("Debugging log");
-        log.info("Info log");
-        log.warn("Hey, This is a warning!");
-        log.error("Oops! We have an Error. OK");
-        log.fatal("Damn! Fatal error. Please fix me.");
-        
         return pi;
     }
    
