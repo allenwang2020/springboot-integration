@@ -16,17 +16,6 @@ mm-service/target/
 mm-service/bin
 mm-web/.project
 mm-web/.classpath
-<<<<<<< HEAD
-<<<<<<< HEAD
 mm-web/target/
 mm-web/bin/
-=======
-mm_web/.DStore
-mm-web/target/
-mm-web/bin/
-mm-web/target
->>>>>>> test
-=======
-mm-web/target/
-mm-web/bin/
->>>>>>> 1a354c9806c513f01ca7edf43e7f350afb69e6d3
+mm_web/.DS_Store

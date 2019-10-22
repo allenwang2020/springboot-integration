@@ -11,11 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
 
+import lombok.extern.log4j.Log4j2;
 
+
+
+
+
+@Log4j2
 @RestController
 @RequestMapping("/user/*")
 public class UserController {
-
 	@SuppressWarnings("all")
     @Autowired
     UserMapper userMapper;
@@ -24,7 +29,9 @@ public class UserController {
 
     @GetMapping("list")
     public List<User> list() {
+ 
         return userMapper.list();
+        
     }
 
     @GetMapping("list/{username}")
@@ -52,7 +59,13 @@ public class UserController {
         List<User> result = userService.listUser(page, pageSize);
         // PageInfo包装结果，返回更多分页相关信息
         PageInfo<User> pi = new PageInfo<User>(result);
-
+       
+        log.debug("Debugging log");
+        log.info("Info log");
+        log.warn("Hey, This is a warning!");
+        log.error("Oops! We have an Error. OK");
+        log.fatal("Damn! Fatal error. Please fix me.");
+        
         return pi;
     }
    

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
@@ -29,7 +32,7 @@ public class UserServiceImpl implements UserService {
             PageHelper.orderBy("user_id ASC "); //进行分页结果的排序
             result = userMapper.list();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.debug(e.getMessage(), e);
         }
 
         return result;
