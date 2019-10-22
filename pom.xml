@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <!-- 專案說明：這裡作為聚合工程的父工程 -->
+  <groupId>com.esb</groupId>
+  <artifactId>springboot-integration</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <!-- 繼承說明：這裡繼承SpringBoot提供的父工程 -->
+  <parent>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-parent</artifactId>
+  <version>2.0.4.RELEASE</version>
+  <relativePath/>
+  </parent>
+  <modules>
+  	<module>mm-web</module>
+  	<module>mm-service</module>
+  	<module>mm-repo</module>
+  	<module>mm-entity</module>
+    <module>mm-entity_1</module>
+  </modules>
+  <!-- 版本說明：這裡統一管理依賴的版本號 -->
+	<dependencyManagement>
+	<dependencies>
+	<dependency>
+	<groupId>com.esb</groupId>
+	<artifactId>mm-web</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+	<groupId>com.esb</groupId>
+	<artifactId>mm-service</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+	<groupId>com.esb</groupId>
+	<artifactId>mm-repo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+	<groupId>com.esb</groupId>
+	<artifactId>mm-entity</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+	<groupId>mysql</groupId>
+	<artifactId>mysql-connector-java</artifactId>
+	<version>5.1.42</version>
+	</dependency>
+	<dependency> <!--添加Mybatis依赖 -->
+	<groupId>org.mybatis.spring.boot</groupId>
+	<artifactId>mybatis-spring-boot-starter</artifactId>
+	<version>1.3.1</version>
+	</dependency>
+	<dependency>
+    <groupId>com.github.pagehelper</groupId>
+    <artifactId>pagehelper-spring-boot-starter</artifactId>
+    <version>1.2.10</version>
+    </dependency>
+    <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-log4j2</artifactId>
+	</dependency>
+	</dependencies>
+	</dependencyManagement>
+</project>

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <!-- 基本資訊 -->
+	<artifactId>mm-web</artifactId>
+	<packaging>jar</packaging>
+	<name>mm-web</name>
+  <!-- 繼承本專案的父工程 -->
+  <parent>
+    <groupId>com.esb</groupId>
+    <artifactId>springboot-integration</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <!-- Web模組相關依賴 -->
+	<dependencies>
+	    <dependency>
+			<groupId>com.esb</groupId>
+			<artifactId>mm-service</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.esb</groupId>
+			<artifactId>mm-entity</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+	<!--指定远程仓库（含插件）-->
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <url>http://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <url>http://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <url>http://repo.spring.io/snapshot</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <url>http://repo.spring.io/milestone</url>
+        </pluginRepository>
+    </pluginRepositories>
+	
+	<build>
+	<plugins>
+		<plugin>
+		<!--該外掛主要用途：構建可執行的JAR -->
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-maven-plugin</artifactId>
+		</plugin>
+	</plugins>
+	</build>
+</project>

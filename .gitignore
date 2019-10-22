@@ -1,0 +1,27 @@
+_Store
+.project
+.settings/
+src/.DS_Store
+mm-entity/.project
+mm-entity/.classpath
+mm-entity/target/
+mm-entity/bin
+mm-repo/.project
+mm-repo/.classpath
+mm-repo/target/
+mm-repo/bin
+mm-service/.project
+mm-service/.classpath
+mm-service/target/
+mm-service/bin
+mm-web/.project
+mm-web/.classpath
+<<<<<<< HEAD
+mm-web/target/
+mm-web/bin/
+=======
+mm_web/.DStore
+mm-web/target/
+mm-web/bin/
+mm-web/target
+>>>>>>> test
