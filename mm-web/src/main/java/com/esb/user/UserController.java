@@ -59,7 +59,7 @@ public class UserController {
         List<User> result = userService.listUser(page, pageSize);
         // PageInfo包装结果，返回更多分页相关信息
         PageInfo<User> pi = new PageInfo<User>(result);
-       
+        log.info("test");
         return pi;
     }
    

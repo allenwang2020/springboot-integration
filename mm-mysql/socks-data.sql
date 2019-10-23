@@ -1,0 +1,10 @@
+INSERT INTO `t_user` VALUES ('1', 'admain', 'adamin','150117912234');
+INSERT INTO `t_user` VALUES ('2', 'roots2', 'roots2','1234567890');
+INSERT INTO `t_user` VALUES ('3', 'roots3', 'roots3','2345678890');
+INSERT INTO `t_user` VALUES ('4', 'roots4', 'roots4','8765432255');
+INSERT INTO `t_user` VALUES ('5', 'roots5', 'roots5','3456788943');
+INSERT INTO `t_user` VALUES ('6', 'roots6', 'roots6','5113579633');
+INSERT INTO `t_user` VALUES ('7', 'roots7', 'roots7','2346739921');
+INSERT INTO `t_user` VALUES ('8', 'roots8', 'roots8','3471985326');
+INSERT INTO `t_user` VALUES ('9', 'roots9', 'roots9','8712349762');
+INSERT INTO `t_user` VALUES ('10', 'roots10', 'roots10','3322115589');

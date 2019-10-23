@@ -1,0 +1,42 @@
+version: '3'
+services:
+  nginx:
+    build: 
+      context: ./mm-nginx
+    image: compose-nginx
+    depends_on:
+     - app
+    ports:
+     - "80:80"    
+  mysql:
+   #找到當前目錄下mysql構建鏡像
+    build: ./mm-mysql
+    #鏡像名稱
+    image: compose-mysql:socks
+    #項目名稱
+    container_name: compose-mysql
+    #端口映射
+    ports:
+     - "3306:3306"
+     #將mysql目錄映射到本地 應根據自己所需要映射的目錄進行修改
+    volumes:
+     - "/Volumes/MacDisk/Users/AllenWang/work/development/DB/mysql/conf:/etc/mysql/conf.d"
+     - "/Volumes/MacDisk/Users/AllenWang/work/development/DB/mysql/logs:/logs"
+     - "/Volumes/MacDisk/Users/AllenWang/work/development/DB/mysql/data:/var/lib/mysql"
+     
+    #設置編碼格式
+    command: [
+           '--character-set-server=utf8mb4',
+           '--collation-server=utf8mb4_unicode_ci'
+    ]
+    #設置初始化密碼
+    environment:
+     MYSQL_ROOT_PASSWORD: "root"
+  app:
+    image: compose-app
+    build:
+      context: ./
+    ports:
+     - "8081:8081"    
+    links:
+     - mysql 
