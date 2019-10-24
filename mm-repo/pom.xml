@@ -9,7 +9,6 @@
   </parent>
   <artifactId>mm-repo</artifactId>
   <name>mm-repo</name>
-  <packaging>jar</packaging>
   <dependencies>
         <dependency>
 			<groupId>com.esb</groupId>

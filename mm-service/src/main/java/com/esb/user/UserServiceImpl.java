@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> listUser(int page, int pageSize) {
+    public List<User> pageList(int page, int pageSize) {
         List<User> result = null;
         try {
             // 调用pagehelper分页，采用starPage方式。starPage应放在Mapper查询函数之前
@@ -36,5 +36,39 @@ public class UserServiceImpl implements UserService {
         }
 
         return result;
+    }
+    
+    @Override
+    public List<User> list() {
+        List<User> result = null;
+        try {
+            result = userMapper.list();
+        } catch (Exception e) {
+            log.debug(e.getMessage(), e);
+        }
+
+        return result;
+    }
+    
+    @Override
+    public User get(String username,String password) {
+    	 User user = new User() ;
+    	try {
+    		 user =  userMapper.get(username, password);
+        } catch (Exception e) {
+            log.debug(e.getMessage(), e);
+        }
+    	return user;
+    }
+    
+    
+    @Override
+    public void saveUser(User user) {
+    	try {
+    		  userMapper.saveUser(user);
+        } catch (Exception e) {
+            log.debug(e.getMessage(), e);
+        }
+      
     }
 }

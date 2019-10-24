@@ -9,7 +9,6 @@
   </parent>
   <artifactId>mm-entity</artifactId>
   <name>mm-entity</name>
-  <packaging>jar</packaging>
   <dependencies>        
         <dependency>
 			<groupId>org.springframework.boot</groupId>

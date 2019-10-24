@@ -9,7 +9,7 @@
   </parent>
   <artifactId>mm-service</artifactId>
   <name>mm-service</name>
-  <packaging>jar</packaging>
+
   <dependencies>
         <dependency>
 			<groupId>com.esb</groupId>
