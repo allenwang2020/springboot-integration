@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginx:alpine
 
 ADD conf/nginx.conf /etc/nginx/conf.d/nginx.conf
 EXPOSE 80 443 
