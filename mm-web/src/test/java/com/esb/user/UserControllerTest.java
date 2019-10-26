@@ -38,7 +38,7 @@ public class UserControllerTest {
       */ 
       @Test
       public void testPageList() throws Exception {
-    	  MvcResult mvcResult =  mockMvc.perform(MockMvcRequestBuilders.get("/user/listUser").param("page","1").param("page-size","2")
+    	  MvcResult mvcResult =  mockMvc.perform(MockMvcRequestBuilders.get("/user/pageList").param("page","1").param("page-size","2")
         		  .accept(MediaType.APPLICATION_JSON_UTF8))
     			  .andExpect(MockMvcResultMatchers.jsonPath("$.total").value("2"))
     			  .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -47,7 +47,8 @@ public class UserControllerTest {
     	  int status=mvcResult.getResponse().getStatus();                 //得到返回程式碼
     	  String content= mvcResult.getResponse().getContentAsString();    //得到返回結果
     	  Assert.assertEquals(200,status);                        //斷言，判斷返回程式碼是否正確 	 
-             
+    	   
+    	  
       }
 	
 }

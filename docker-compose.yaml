@@ -2,15 +2,17 @@ version: '3'
 services:
   nginx:
     build: 
-      context: ./mm-nginx
+      context: ./nginx
     image: compose-nginx
+    #項目名稱
+    container_name: compose-nginx
     depends_on:
      - app
     ports:
      - "80:80"    
   mysql:
    #找到當前目錄下mysql構建鏡像
-    build: ./mm-mysql
+    build: ./mysql
     #鏡像名稱
     image: compose-mysql:socks
     #項目名稱
@@ -36,6 +38,8 @@ services:
     image: compose-app
     build:
       context: ./
+    #項目名稱
+    container_name: compose-springboot-app
     ports:
      - "8082:8082"    
     links:
