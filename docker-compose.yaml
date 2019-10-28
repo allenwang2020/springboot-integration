@@ -26,9 +26,9 @@ services:
      - "3306:3306"
      #將mysql目錄映射到本地 應根據自己所需要映射的目錄進行修改
     volumes:
-     - "/Volumes/MacDisk/Users/AllenWang/work/development/DB/mysql/conf:/etc/mysql/conf.d"
-     - "/Volumes/MacDisk/Users/AllenWang/work/development/DB/mysql/logs:/logs"
-     - "/Volumes/MacDisk/Users/AllenWang/work/development/DB/mysql/data:/var/lib/mysql"
+     - "/home/DB/mysql/conf:/etc/mysql/conf.d"
+     - "/home/DB/mysql/logs:/logs"
+     - "/home/DB/mysql/data:/var/lib/mysql"
      
     #設置編碼格式
     command: [
