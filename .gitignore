@@ -20,3 +20,9 @@ mm-web/.classpath
 mm-web/target/
 mm-web/bin/
 mm_web/.DS_Store
+mm-util/.project
+mm-util/.classpath
+mm-util/target/
+mm-util/bin
+
+
