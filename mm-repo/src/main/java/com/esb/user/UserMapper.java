@@ -1,6 +1,5 @@
 package com.esb.user;
 
-import com.esb.user.User;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
