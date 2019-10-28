@@ -14,7 +14,12 @@
 			<groupId>com.esb</groupId>
 			<artifactId>mm-entity</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.esb</groupId>
+			<artifactId>mm-util</artifactId>
+		</dependency>
 	<dependency>
+	
 	<groupId>mysql</groupId>
 	<artifactId>mysql-connector-java</artifactId>
 	<!--排除-->

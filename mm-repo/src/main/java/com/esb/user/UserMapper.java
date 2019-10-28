@@ -5,12 +5,12 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 /**
- * 主要用途：介绍Mybatis注解的常见使用方式.
+ * 主要用途：Mybatis注解的常見使用方式.
  */
 @Mapper
 public interface UserMapper {
     /**
-     * 方式1：使用注解编写SQL。
+     * 方式1：使用注解編實SQL。
      */
     @Select("select * from t_user")
 	/*
@@ -27,15 +27,15 @@ public interface UserMapper {
     List<User> list();
 
     /**
-     * 方式2：使用注解指定某个工具类的方法来动态编写SQL.
+     * 方式2：使用注解指定某個工具類的方法来動態編寫SQL.
      */
     @SelectProvider(type = UserSqlProvider.class, method = "listByUsername")
     List<User> listByUsername(String username);
 
     /**
-     * 延伸：上述两种方式都可以附加@Results注解来指定结果集的映射关系.
+     * 延伸：上述兩種方式都可以附加@Results注解来指定结果集的映射關系.
      *
-     * PS：如果符合下划线转驼峰的匹配项可以直接省略不写。
+     * PS：如果符合下劃線轉駝峰的匹配項可以直接省略不寫。
      */
     @Results({
             @Result(property = "userId", column = "USER_ID"),
@@ -47,7 +47,7 @@ public interface UserMapper {
     List<User> listSample();
 
     /**
-     * 延伸：无论什么方式,如果涉及多个参数,则必须加上@Param注解,否则无法使用EL表达式获取参数。
+     * 延伸：無論什麼方式,如果涉及多個参數,则必须加上@Param注解,否则無法使用EL表達表獲取参數。
      */
     @Select("select * from t_user where username like #{username} and password like #{password}")
     User get(@Param("username") String username, @Param("password") String password);
@@ -58,5 +58,16 @@ public interface UserMapper {
     @Insert("INSERT INTO `t_user` VALUES (#{userId},#{username},#{password},#{phoneNum})")
     //@Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
     void saveUser(User user);
+    
+    
+    /*
+     * 以下為seckill功能
+     */
+    
+    @Select("select * from sk_user where id = #{id}")
+    public User getById(@Param("id")long id);
+
+    @Update("update sk_user set password = #{password} where id = #{id}")
+    public void update(User toBeUpdate);
 }
 

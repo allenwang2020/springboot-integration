@@ -18,6 +18,7 @@
   	<module>mm-service</module>
   	<module>mm-repo</module>
   	<module>mm-entity</module>
+    <module>mm-util</module>
   </modules>
   <!-- 版本說明：這裡統一管理依賴的版本號 -->
 	<dependencyManagement>
@@ -40,6 +41,11 @@
 	<dependency>
 	<groupId>com.esb</groupId>
 	<artifactId>mm-entity</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+	<groupId>com.esb</groupId>
+	<artifactId>mm-util</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	</dependency>
 	<dependency>
