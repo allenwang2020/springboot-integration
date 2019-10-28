@@ -1,7 +1,13 @@
 package com.esb.goods;
 
-public class Goods {
-	 private Long id;
+import java.io.Serializable;
+
+public class Goods implements Serializable{
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5502305195223175321L;
+	private Long id;
 	 private String goodsName;
 	 private String goodsTitle;
 	 private String goodsImg;

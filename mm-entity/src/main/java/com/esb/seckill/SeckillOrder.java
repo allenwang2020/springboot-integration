@@ -1,6 +1,13 @@
 package com.esb.seckill;
 
-public class SeckillOrder {
+import java.io.Serializable;
+
+public class SeckillOrder implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3911591079798279809L;
+	
 	private Long id;
     private Long userId;
     private Long  orderId;

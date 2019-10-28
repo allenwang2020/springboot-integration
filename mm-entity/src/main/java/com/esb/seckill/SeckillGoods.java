@@ -1,9 +1,15 @@
 package com.esb.seckill;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SeckillGoods {
-	 private Long id;
+public class SeckillGoods implements Serializable{
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6296305396670382421L;
+	
+	private Long id;
 	 private Long goodsId;
 	 private Integer stockCount;
 	 private Date startDate;

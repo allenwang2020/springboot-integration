@@ -2,22 +2,34 @@ package com.esb.user;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
+import org.mm.exception.GlobalException;
+import org.mm.result.CodeMsg;
+import org.mm.util.MD5Util;
+import org.mm.util.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.esb.redis.key.UserKey;
+import com.esb.vo.LoginVo;
 import com.github.pagehelper.PageHelper;
 
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Service("userService")
+@CacheConfig(cacheNames = "user") //指定cache的名字,这里指定了 caheNames，下面的方法的注解里就可以不用指定 value 属性了
 public class UserServiceImpl implements UserService {
 
 	@SuppressWarnings("all")
     @Autowired
     UserMapper userMapper;
-
+	
     @Override
     public User getUserById(long userId) {
         return null;
@@ -29,7 +41,7 @@ public class UserServiceImpl implements UserService {
         try {
             // 调用pagehelper分页，采用starPage方式。starPage应放在Mapper查询函数之前
             PageHelper.startPage(page, pageSize); //每页的大小为pageSize，查询第page页的结果
-            PageHelper.orderBy("user_id ASC "); //进行分页结果的排序
+            PageHelper.orderBy("id ASC "); //进行分页结果的排序
             result = userMapper.list();
         } catch (Exception e) {
             log.debug(e.getMessage(), e);
@@ -50,16 +62,6 @@ public class UserServiceImpl implements UserService {
         return result;
     }
     
-    @Override
-    public User get(String username,String password) {
-    	 User user = new User() ;
-    	try {
-    		 user =  userMapper.get(username, password);
-        } catch (Exception e) {
-            log.debug(e.getMessage(), e);
-        }
-    	return user;
-    }
     
     
     @Override
@@ -71,4 +73,70 @@ public class UserServiceImpl implements UserService {
         }
       
     }
+    
+    /**
+     * 以下為seckill功能
+     */
+    
+    public static final String COOKIE_NAME_TOKEN = "token";
+
+    @Cacheable(key =  "'userkey'.concat(#id.toString())")
+    public User getById(long id) {
+        User user = userMapper.getById(id);
+        return user;
+    }
+
+    /**
+     * 典型緩存同步場景：更新密碼
+     */
+    @CachePut(key =  "'userkey'.concat(#id.toString())")
+    public boolean updatePassword(String token, long id, String formPass) {
+    	//取user
+        User user = getById(id);
+        if(user == null) {
+            throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
+        }
+        //更新資料庫
+        user.setPassword(MD5Util.formPassToDBPass(formPass, user.getSalt()));
+        userMapper.update(user);
+       
+        return true;
+    }
+
+    public String login(HttpServletResponse response, LoginVo loginVo) {
+        if (loginVo == null) {
+            throw new GlobalException(CodeMsg.SERVER_ERROR);
+        }
+        String mobile = loginVo.getMobile();
+        String formPass = loginVo.getPassword();
+        //判斷手機號碼是否存在
+        User user = getById(Long.parseLong(mobile));
+        if (user == null) {
+            throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
+        }
+        //驗證密碼
+        String dbPass = user.getPassword();
+        String saltDB = user.getSalt();
+        String calcPass = MD5Util.formPassToDBPass(formPass, saltDB);
+        if (!calcPass.equals(dbPass)) {
+            throw new GlobalException(CodeMsg.PASSWORD_ERROR);
+        }
+        //生成唯一id作为token
+        String token = UUIDUtil.uuid();
+        addCookie(response, token, user);
+        return token;
+    }
+
+    /**
+     * 將token做為key，用戶訊息做为value 存入redis模擬session
+     * 同時將token存入cookie，保存登錄狀態
+     */
+    @CachePut(key = "#token")
+    public void addCookie(HttpServletResponse response, String token, User user) {
+        Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token);
+        cookie.setMaxAge(UserKey.token.expireSeconds());
+        cookie.setPath("/");//设置为网站根目录
+        response.addCookie(cookie);
+    }
+    
 }

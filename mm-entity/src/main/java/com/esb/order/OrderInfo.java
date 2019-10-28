@@ -1,8 +1,13 @@
 package com.esb.order;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class OrderInfo {
+public class OrderInfo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1532442907639751699L;
 	private Long id;
     private Long userId;
     private Long goodsId;

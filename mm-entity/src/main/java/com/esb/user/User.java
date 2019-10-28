@@ -1,8 +1,14 @@
 package com.esb.user;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8931847759641655907L;
 	private Long id;
     private String nickname;
     private String password;

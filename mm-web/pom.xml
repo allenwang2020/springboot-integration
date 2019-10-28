@@ -33,9 +33,7 @@
     		</exclusions>
 			<scope>test</scope>
 		</dependency>
-		
 	</dependencies>
-	 
  	<profiles>
         <profile>
             <id>local</id>

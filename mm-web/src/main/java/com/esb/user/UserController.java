@@ -43,17 +43,20 @@ public class UserController {
         return result;
     }
     
-    @GetMapping("get")
-    public User get(
-            @RequestParam(value="username", required=true) String username,
-            @RequestParam(value="password", required=true) String password){
-        User user = userService.get(username, password);
-        return user;
-    }
-   
     @PostMapping("saveUser")
     public void saveUser(@RequestBody User user) {
     	userService.saveUser(user);
     }
 
+    @GetMapping("getById")
+    public User getById(
+            @RequestParam(value="id", required=true) String id){
+        User loaded = userService.getById(Long.valueOf(id));
+       
+        System.out.println("loaded="+loaded);
+        User cached = userService.getById(Long.valueOf(id));
+        System.out.println("cached="+cached);
+       
+        return cached;
+    }
 }
