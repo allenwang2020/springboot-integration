@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
         if (!calcPass.equals(dbPass)) {
             throw new GlobalException(CodeMsg.PASSWORD_ERROR);
         }
-        //生成唯一id作为token
+        //生成唯一id作為token
         String token = UUIDUtil.uuid();
         addCookie(response, token, user);
         return token;
@@ -155,7 +155,6 @@ public class UserServiceImpl implements UserService {
         }
         String realKey = UserKey.token.getPrefix()+token;
         User user = (User)redisUtil.get(realKey);
-        //延长有效期，有效期等于最后一次操作+有效期
         //延長有效期，有效期等于最后一次操作+有效期
         if (user != null) {
             addCookie(response, token, user);

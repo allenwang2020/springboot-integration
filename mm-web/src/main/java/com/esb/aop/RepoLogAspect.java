@@ -27,7 +27,8 @@ public class RepoLogAspect {
 
     ThreadLocal<Long> startTime = new ThreadLocal<>();
 
-    @Pointcut("execution(public * com.esb.user..UserMapper.*(..))")
+    @Pointcut("execution(public * com.esb.user..UserMapper.*(..)) ||"
+    		+ " execution(public * com.esb.goods..GoodsMapper.*(..))")
     public void repoLog(){
 
     }

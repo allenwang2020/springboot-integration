@@ -2,6 +2,7 @@ package com.esb.goods;
 
 import java.util.List;
 
+import com.esb.redis.key.KeyPrefix;
 import com.esb.vo.GoodsVo;
 
 public interface GoodsService {
@@ -10,14 +11,14 @@ public interface GoodsService {
      *
      * @return
      */
-    public List<GoodsVo> listGoodsVo();
+    public List<GoodsVo> listGoodsVo(KeyPrefix prefix,String key);
     
     /**
      * 根據id查詢指定商品
      *
      * @return
      */
-    public GoodsVo getGoodsVoByGoodsId(long goodsId);
+    public GoodsVo getGoodsVoByGoodsId(KeyPrefix prefix,long goodsId);
     
     /**
     * 減少庫存，每次減一
