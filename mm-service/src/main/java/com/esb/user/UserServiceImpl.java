@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.mm.exception.GlobalException;
 import org.mm.result.CodeMsg;
 import org.mm.util.MD5Util;
@@ -15,7 +16,9 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.esb.redis.key.KeyPrefix;
 import com.esb.redis.key.UserKey;
+import com.esb.redis.util.RedisUtil;
 import com.esb.vo.LoginVo;
 import com.github.pagehelper.PageHelper;
 
@@ -29,6 +32,9 @@ public class UserServiceImpl implements UserService {
 	@SuppressWarnings("all")
     @Autowired
     UserMapper userMapper;
+	
+	@Autowired
+    RedisUtil redisUtil;
 	
     @Override
     public User getUserById(long userId) {
@@ -80,8 +86,8 @@ public class UserServiceImpl implements UserService {
     
     public static final String COOKIE_NAME_TOKEN = "token";
 
-    @Cacheable(key =  "'userkey'.concat(#id.toString())")
-    public User getById(long id) {
+    @Cacheable(key = "#prefix.prefix + '' + #id.toString()")
+    public User getById(KeyPrefix prefix ,long id) {
         User user = userMapper.getById(id);
         return user;
     }
@@ -92,7 +98,7 @@ public class UserServiceImpl implements UserService {
     @CachePut(key =  "'userkey'.concat(#id.toString())")
     public boolean updatePassword(String token, long id, String formPass) {
     	//取user
-        User user = getById(id);
+        User user = getById(UserKey.getById,id);
         if(user == null) {
             throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
         }
@@ -110,7 +116,7 @@ public class UserServiceImpl implements UserService {
         String mobile = loginVo.getMobile();
         String formPass = loginVo.getPassword();
         //判斷手機號碼是否存在
-        User user = getById(Long.parseLong(mobile));
+        User user = getById(UserKey.getById,Long.parseLong(mobile));
         if (user == null) {
             throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
         }
@@ -128,15 +134,33 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 將token做為key，用戶訊息做为value 存入redis模擬session
+     * 將token做為key，用戶訊息做為value 存入redis模擬session
      * 同時將token存入cookie，保存登錄狀態
      */
     @CachePut(key = "#token")
     public void addCookie(HttpServletResponse response, String token, User user) {
         Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token);
         cookie.setMaxAge(UserKey.token.expireSeconds());
-        cookie.setPath("/");//设置为网站根目录
+        cookie.setPath("/");//設置為網站根目錄
         response.addCookie(cookie);
+    }
+    
+    /**
+     * 根據token取得用戶訊息
+     */
+    @Cacheable(key =  "'userkey'.concat(#token.toString())")
+    public User getByToken(HttpServletResponse response, String token) {
+        if (StringUtils.isEmpty(token)) {
+            return null;
+        }
+        String realKey = UserKey.token.getPrefix()+token;
+        User user = (User)redisUtil.get(realKey);
+        //延长有效期，有效期等于最后一次操作+有效期
+        //延長有效期，有效期等于最后一次操作+有效期
+        if (user != null) {
+            addCookie(response, token, user);
+        }
+        return user;
     }
     
 }

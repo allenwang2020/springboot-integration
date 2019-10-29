@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.esb.redis.key.KeyPrefix;
 import com.esb.vo.LoginVo;
 
 public interface UserService {
@@ -16,7 +17,7 @@ public interface UserService {
 	
 	public void saveUser(User user);
 	
-	public User getById(long id);
+	public User getById(KeyPrefix prefix,long id);
 	
 	public boolean updatePassword(String token, long id, String formPass);
 	
@@ -24,7 +25,7 @@ public interface UserService {
 	
 	public void addCookie(HttpServletResponse response, String token, User user);
 	
-	// public User getByToken(HttpServletResponse response, String token);
+    public User getByToken(HttpServletResponse response, String token);
 	
 	
 	

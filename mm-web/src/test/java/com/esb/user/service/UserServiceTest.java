@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.esb.redis.key.UserKey;
 import com.esb.user.User;
 import com.esb.user.UserService;
 
@@ -22,7 +23,9 @@ public class UserServiceTest {
 
     @Test
     public void get() {
-        final User user = userService.getById(18181818181L);
+    	String prefix = UserKey.getById.getPrefix();
+    	log.info(prefix);
+        final User user = userService.getById(UserKey.getById,18181818181L);
         log.info("[getById] - [{}]", user);
        
     }

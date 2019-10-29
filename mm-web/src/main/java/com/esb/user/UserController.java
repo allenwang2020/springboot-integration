@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.esb.redis.key.UserKey;
 import com.github.pagehelper.PageInfo;
 
 import lombok.extern.log4j.Log4j2;
@@ -51,12 +52,7 @@ public class UserController {
     @GetMapping("getById")
     public User getById(
             @RequestParam(value="id", required=true) String id){
-        User loaded = userService.getById(Long.valueOf(id));
-       
-        System.out.println("loaded="+loaded);
-        User cached = userService.getById(Long.valueOf(id));
-        System.out.println("cached="+cached);
-       
-        return cached;
+        User user = userService.getById(UserKey.getById,Long.valueOf(id));
+        return user;
     }
 }
