@@ -19,7 +19,7 @@ public interface UserService {
 	
 	public User getById(KeyPrefix prefix,long id);
 	
-	public boolean updatePassword(String token, long id, String formPass);
+	public boolean updatePassword(KeyPrefix prefix,String token, long id, String formPass);
 	
 	public String login(HttpServletResponse response, LoginVo loginVo);
 	

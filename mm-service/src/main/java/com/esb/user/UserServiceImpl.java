@@ -95,10 +95,10 @@ public class UserServiceImpl implements UserService {
     /**
      * 典型緩存同步場景：更新密碼
      */
-    @CachePut(key =  "'userkey'.concat(#id.toString())")
-    public boolean updatePassword(String token, long id, String formPass) {
+    @CachePut(key = "#prefix.prefix + '' + #id.toString()")
+    public boolean updatePassword(KeyPrefix prefix ,String token, long id, String formPass) {
     	//取user
-        User user = getById(UserKey.getById,id);
+        User user = getById(prefix,id);
         if(user == null) {
             throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
         }
