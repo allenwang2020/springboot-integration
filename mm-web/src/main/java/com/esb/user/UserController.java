@@ -2,6 +2,7 @@ package com.esb.user;
 
 import java.util.List;
 
+import org.mm.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,5 +55,10 @@ public class UserController {
             @RequestParam(value="id", required=true) String id){
         User user = userService.getById(UserKey.getById,Long.valueOf(id));
         return user;
+    }
+    
+    @RequestMapping("info")
+    public Result<User> info(@RequestBody User user) {
+        return Result.success(user);
     }
 }
