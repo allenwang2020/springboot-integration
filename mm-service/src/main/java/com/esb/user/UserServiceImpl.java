@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
             PageHelper.orderBy("id ASC "); //进行分页结果的排序
             result = userMapper.list();
         } catch (Exception e) {
-            log.debug(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
         return result;
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         try {
             result = userMapper.list();
         } catch (Exception e) {
-            log.debug(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
         return result;
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
     	try {
     		  userMapper.saveUser(user);
         } catch (Exception e) {
-            log.debug(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
       
     }
