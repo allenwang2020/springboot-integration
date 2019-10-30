@@ -1,6 +1,6 @@
-package org.mm.exception;
+package com.esb.exception;
 
-import org.mm.result.CodeMsg;
+import com.esb.result.CodeMsg;
 
 /**
  * 自定義全域Exception

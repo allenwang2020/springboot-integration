@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,9 +17,12 @@ import org.springframework.stereotype.Component;
 
 /**
  **/
+
 @Component
 public class RedisUtil {
 
+	
+	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 	private ValueOperations<String, Object> valueOperations;
 	private HashOperations<String, Object, Object> hashOperations;
@@ -97,6 +102,9 @@ public class RedisUtil {
 	 * @return 值
 	 */
 	public Object get(String key) {
+		if(valueOperations==null) {
+			valueOperations= redisTemplate.opsForValue();
+		}
 		return key == null ? null : valueOperations.get(key);
 	}
 
@@ -109,6 +117,9 @@ public class RedisUtil {
 	 */
 	public boolean set(String key, Object value) {
 		try {
+			if(valueOperations==null) {
+				valueOperations= redisTemplate.opsForValue();
+			}
 			valueOperations.set(key, value);
 			return true;
 		} catch (Exception e) {
@@ -129,6 +140,9 @@ public class RedisUtil {
 	public boolean set(String key, Object value, long time) {
 		try {
 			if (time > 0) {
+				if(valueOperations==null) {
+					valueOperations= redisTemplate.opsForValue();
+				}
 				valueOperations.set(key, value, time, TimeUnit.SECONDS);
 			} else {
 				set(key, value);
@@ -151,6 +165,9 @@ public class RedisUtil {
 		if (delta < 0) {
 			throw new RuntimeException("遞增因子必须大於0");
 		}
+		if(valueOperations==null) {
+			valueOperations= redisTemplate.opsForValue();
+		}
 		return valueOperations.increment(key, delta);
 	}
 
@@ -164,6 +181,9 @@ public class RedisUtil {
 	public long decr(String key, long delta) {
 		if (delta < 0) {
 			throw new RuntimeException("遞减因子必须大於0");
+		}
+		if(valueOperations==null) {
+			valueOperations= redisTemplate.opsForValue();
 		}
 		return valueOperations.increment(key, -delta);
 	}

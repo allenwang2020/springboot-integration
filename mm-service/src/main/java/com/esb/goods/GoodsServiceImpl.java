@@ -13,7 +13,7 @@ import com.esb.vo.GoodsVo;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-@Service("goodsSrvice")
+@Service("goodsService")
 public class GoodsServiceImpl implements GoodsService{
 	//樂觀鎖衝突最大重試次數
     private static final int DEFAULT_MAX_RETRIES = 5;

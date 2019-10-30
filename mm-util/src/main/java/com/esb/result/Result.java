@@ -1,4 +1,4 @@
-package org.mm.result;
+package com.esb.result;
 
 public class Result<T> {
 	

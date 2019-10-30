@@ -5,13 +5,21 @@ import java.util.Date;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.esb.goods.GoodsService;
 import com.esb.redis.RedisService;
 import com.esb.redis.key.OrderKey;
 import com.esb.seckill.SeckillOrder;
+import com.esb.seckill.SeckillService;
 import com.esb.user.User;
+import com.esb.user.UserServiceImpl;
 import com.esb.vo.GoodsVo;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
+@Service("orderService")
 public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
@@ -31,7 +39,7 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	/**
-     * 因为要同時分别在訂單和秒殺订單都新增一筆資料，所以要保證個個操作是一個事物
+     * 因为要同時分别在訂單和秒殺訂單都新增一筆資料，所以要保證個個操作是一個事物
      */
 	@Override
     @Transactional

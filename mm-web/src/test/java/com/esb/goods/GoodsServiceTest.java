@@ -1,4 +1,4 @@
-package com.esb.user.service;
+package com.esb.goods;
 
 import java.util.List;
 

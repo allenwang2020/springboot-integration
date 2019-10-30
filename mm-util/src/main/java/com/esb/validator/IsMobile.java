@@ -1,4 +1,4 @@
-package org.mm.validator;
+package com.esb.validator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

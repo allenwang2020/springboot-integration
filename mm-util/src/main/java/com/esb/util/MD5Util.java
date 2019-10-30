@@ -1,4 +1,4 @@
-package org.mm.util;
+package com.esb.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
 

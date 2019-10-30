@@ -4,14 +4,15 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.mm.exception.GlobalException;
-import org.mm.result.CodeMsg;
-import org.mm.result.Result;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.esb.exception.GlobalException;
+import com.esb.result.CodeMsg;
+import com.esb.result.Result;
 
 /**
  * 自定義全域Exception攔截器

@@ -1,4 +1,4 @@
-package com.esb.user.controller;
+package com.esb.user;
 
 
 import org.junit.Assert;

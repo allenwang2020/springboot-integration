@@ -1,10 +1,11 @@
-package org.mm.validator;
+package com.esb.validator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.apache.commons.lang3.StringUtils;
-import org.mm.util.ValidatorUtil;
+
+import com.esb.util.ValidatorUtil;
 
 /**
  * 自定義手機格式驗證器

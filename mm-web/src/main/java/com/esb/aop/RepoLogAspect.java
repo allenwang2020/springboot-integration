@@ -37,21 +37,25 @@ public class RepoLogAspect {
     public void doBefore(JoinPoint joinPoint) throws Throwable{
         //接受到請求，記錄請求內容
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = (HttpServletRequest) attributes.getRequest();
+        if(attributes!=null) {
+	        HttpServletRequest request = (HttpServletRequest) attributes.getRequest();
 
-        log.info("URL : " + request.getRequestURL().toString());
-        log.info("HTTP_METHOD : " + request.getMethod());
-        log.info("IP : " + request.getRemoteAddr());
-        log.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
-        log.info("ARGS : " + Arrays.toString(joinPoint.getArgs()));
-
-        startTime.set(System.currentTimeMillis());
+	        log.info("URL : " + request.getRequestURL().toString());
+	        log.info("HTTP_METHOD : " + request.getMethod());
+	        log.info("IP : " + request.getRemoteAddr());
+	        log.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+	        log.info("ARGS : " + Arrays.toString(joinPoint.getArgs()));
+	
+	        startTime.set(System.currentTimeMillis());
+        }
     }
 
     @AfterReturning(returning = "ret", pointcut = "repoLog()")
     public void doAfterReturning(Object ret) throws Throwable{
     	log.info("RESPONSE : " + ret);
-    	log.info("SPEND TIME : " + (System.currentTimeMillis() - startTime.get()));
+    	if(startTime.get()!=null) {
+    		log.info("SPEND TIME : " + (System.currentTimeMillis() - startTime.get()));
+    	}
     }
 
     @Around("repoLog()")

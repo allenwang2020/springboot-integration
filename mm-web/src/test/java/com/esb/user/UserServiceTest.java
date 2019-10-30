@@ -1,4 +1,4 @@
-package com.esb.user.service;
+package com.esb.user;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

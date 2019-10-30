@@ -3,12 +3,12 @@ package com.esb.user;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.mm.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.esb.result.Result;
 import com.esb.vo.LoginVo;
 
 import lombok.extern.log4j.Log4j2;
