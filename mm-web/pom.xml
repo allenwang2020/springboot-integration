@@ -38,6 +38,11 @@
 		    <groupId>com.google.guava</groupId>
 		    <artifactId>guava</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka -->
+		<dependency>
+   	    <groupId>org.springframework.kafka</groupId>
+    	<artifactId>spring-kafka</artifactId>
+		</dependency>
 	</dependencies>
  	<profiles>
         <profile>

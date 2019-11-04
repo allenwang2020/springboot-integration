@@ -1,0 +1,27 @@
+version: '3'
+services:
+  mysql:
+    build:
+      context: ./
+      dockerfile: mysql.Dockerfile
+    image: seckill/mysql:1.0
+    container_name: mysql
+    hostname: mysql
+    ports:
+     - "3306:3306"
+     #將mysql目錄映射到本地 應根據自己所需要映射的目錄進行修改
+    volumes:
+     - "/home/DB/mysql/conf:/etc/mysql/conf.d"
+     - "/home/DB/mysql/logs:/logs"
+     - "/home/DB/mysql/data:/var/lib/mysql"
+     
+    #設置編碼格式
+    command: [
+           '--character-set-server=utf8mb4',
+           '--collation-server=utf8mb4_unicode_ci'
+    ]
+    #設置初始化密碼
+    environment:
+     MYSQL_ROOT_PASSWORD: "root"
+ 
+  

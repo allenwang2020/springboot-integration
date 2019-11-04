@@ -35,7 +35,7 @@ public class KafkaConsumer {
     @Autowired
     SeckillService seckillService;
     
-    @KafkaListener(topics= {"${kafka.topic.name}"})
+    @KafkaListener(topics= {"${spring.kafka.topic.name}"})
 	public void listeener(ConsumerRecord<?, ?> record) {
 		
 		Optional<?> msg = Optional.ofNullable(record.value());
@@ -59,7 +59,11 @@ public class KafkaConsumer {
 		        //減庫存 下訂單 寫入秒殺訂單
 		        seckillService.seckill(user, goodsVo);
 		        log.info(seckillMessage);
+			}else {
+				String message = (String)msg.get();
+				log.info("Consumer receive message:"+message);
 			}
+		
 		}
 	}
 	

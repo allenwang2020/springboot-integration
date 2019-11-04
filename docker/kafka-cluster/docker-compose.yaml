@@ -1,0 +1,44 @@
+version: '3'
+services:
+   kafka01:
+    build:
+      context: ./kafka-01
+      dockerfile: kafka.Dockerfile
+    image: seckill/kafka:1.0
+    restart: always
+    container_name: kafka01
+    hostname: kafka01
+    ports:
+      - "9092:9092"
+    environment:
+      ZOOKEEPER_CONNECT: ${ZOO_SERVERS} 
+      BROKER_ID: 1
+      LISTENERS: listeners=PLAINTEXT:\/\/kafka01:9092
+      ADVERTISED_LISTENERS: advertised.listeners=PLAINTEXT:\/\/${HOST_NAME}:9092
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    expose:
+      - 9092
+
+   kafka02:
+    build:
+      context: ./kafka-02
+      dockerfile: kafka.Dockerfile
+    image: seckill/kafka:1.0
+    restart: always
+    container_name: kafka02
+    hostname: kafka02
+    ports:
+      - "9093:9093"
+    environment:
+      ZOOKEEPER_CONNECT: ${ZOO_SERVERS} 
+      BROKER_ID: 2
+      LISTENERS: listeners=PLAINTEXT:\/\/kafka02:9093
+      ADVERTISED_LISTENERS: advertised.listeners=PLAINTEXT:\/\/${HOST_NAME}:9093
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    expose:
+      - 9093
+
+
+  

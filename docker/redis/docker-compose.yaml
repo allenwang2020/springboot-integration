@@ -1,0 +1,15 @@
+version: '3'
+services:
+  redis:
+    build:
+      context: ./
+      dockerfile: redis.Dockerfile
+    image: seckill/redis:1.0
+    container_name: redis
+    hostname: redis
+    ports:
+      - "6379:6379"  
+ 
+  
+      
+  

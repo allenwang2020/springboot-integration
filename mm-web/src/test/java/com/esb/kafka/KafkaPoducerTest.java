@@ -20,6 +20,7 @@ public class KafkaPoducerTest {
 	public void testKafkaProducer() {
 		String msgStr= "測試發送訊息";
 		kafkaProducer.send(msgStr);
+		log.info("producer send message:"+msgStr);
     }   
 	
 }

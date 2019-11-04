@@ -1,0 +1,12 @@
+version: '3'
+services:
+  nginx:
+    build:
+      context: ./
+      dockerfile: nginx.Dockerfile
+    image: seckill/nginx:1.0
+    container_name: nginx
+    hostname: nginx
+    ports:
+     - "80:80"  
+    

@@ -1,0 +1,25 @@
+version: '3'
+services:
+  zookeeper01:
+    build:
+      context: ./
+      dockerfile: zookeeper.Dockerfile
+    image: seckill/zookeeper:1.0
+    container_name: zookeeper01
+    hostname: zookeeper01
+    ports:
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+    expose:
+      - 2181
+      - 2888
+      - 3888
+    environment:
+      ZOOKEEPER_PORT: 2181
+      ZOOKEEPER_ID: 1
+      ZOOKEEPER_SERVERS: ${ZOO_SERVERS}
+
+  
+      
+  

@@ -15,7 +15,7 @@ public class KafkaProducer {
 	@Autowired
 	private KafkaTemplate<String, Object> kafkaTemplate;
 	
-	@Value("${kafka.topic.name}")
+	@Value("${spring.kafka.topic.name}")
 	private String topicNm;
 	
 	/**
