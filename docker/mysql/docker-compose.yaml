@@ -7,6 +7,9 @@ services:
     image: seckill/mysql:1.0
     container_name: mysql
     hostname: mysql
+    networks:
+      - default
+      - app_net
     ports:
      - "3306:3306"
      #將mysql目錄映射到本地 應根據自己所需要映射的目錄進行修改
@@ -23,5 +26,7 @@ services:
     #設置初始化密碼
     environment:
      MYSQL_ROOT_PASSWORD: "root"
- 
+networks:
+  app_net:
+    external: true
   

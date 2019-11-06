@@ -6,20 +6,20 @@ services:
       dockerfile: zookeeper.Dockerfile
     image: seckill/zookeeper:1.0
     container_name: zookeeper02
-    hostname: zookeeper02
     ports:
       - "2182:2182"
       - "2889:2889"
       - "3889:3889"
-    expose:
-      - 2182
-      - 2889
-      - 3889
+    networks:
+      - default
+      - app_net  
     environment:
       ZOOKEEPER_PORT: 2182
       ZOOKEEPER_ID: 2
-      ZOOKEEPER_SERVERS: ${ZOO_SERVERS}
+      ZOOKEEPER_SERVERS: server.1=zookeeper0:2888:3888;2181 server.2=zookeeper02:2889:3889;2182
 
-  
+networks:
+  app_net:
+    external: true   
       
   

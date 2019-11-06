@@ -2,7 +2,7 @@ version: '3'
 services:
    kafka01:
     build:
-      context: ./kafka-01
+      context: ./
       dockerfile: kafka.Dockerfile
     image: seckill/kafka:1.0
     restart: always
@@ -10,11 +10,14 @@ services:
     hostname: kafka01
     ports:
       - "9092:9092"
+    networks:
+      - default
+      - app_net    
     environment:
-      ZOOKEEPER_CONNECT: ${ZOO_SERVERS} 
+      ZOOKEEPER_CONNECT: zookeeper01:2181,zookeeper02:2182
       BROKER_ID: 1
       LISTENERS: listeners=PLAINTEXT:\/\/kafka01:9092
-      ADVERTISED_LISTENERS: advertised.listeners=PLAINTEXT:\/\/${HOST_NAME}:9092
+      ADVERTISED_LISTENERS: advertised.listeners=PLAINTEXT:\/\/kafka01:9092
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     expose:
@@ -30,15 +33,20 @@ services:
     hostname: kafka02
     ports:
       - "9093:9093"
+    networks:
+      - default
+      - app_net    
     environment:
-      ZOOKEEPER_CONNECT: ${ZOO_SERVERS} 
+      ZOOKEEPER_CONNECT: zookeeper01:2181,zookeeper02:2182 
       BROKER_ID: 2
       LISTENERS: listeners=PLAINTEXT:\/\/kafka02:9093
-      ADVERTISED_LISTENERS: advertised.listeners=PLAINTEXT:\/\/${HOST_NAME}:9093
+      ADVERTISED_LISTENERS: advertised.listeners=PLAINTEXT:\/\/kafka02:9093
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     expose:
       - 9093
-
+networks:
+  app_net:
+    external: true  
 
   

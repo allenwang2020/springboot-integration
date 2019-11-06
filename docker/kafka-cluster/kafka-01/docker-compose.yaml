@@ -10,16 +10,21 @@ services:
     hostname: kafka01
     ports:
       - "9092:9092"
+    networks:
+      - default
+      - app_net    
     environment:
-      ZOOKEEPER_CONNECT: ${ZOO_SERVERS} 
+      ZOOKEEPER_CONNECT: zookeeper01:2181,zookeeper02:2182
       BROKER_ID: 1
       LISTENERS: listeners=PLAINTEXT:\/\/kafka01:9092
-      ADVERTISED_LISTENERS: advertised.listeners=PLAINTEXT:\/\/${HOST_NAME}:9092
+      ADVERTISED_LISTENERS: advertised.listeners=PLAINTEXT:\/\/kafka01:9092
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     expose:
       - 9092
-
+networks:
+  app_net:
+    external: true  
   
       
   

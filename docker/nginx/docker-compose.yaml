@@ -7,6 +7,12 @@ services:
     image: seckill/nginx:1.0
     container_name: nginx
     hostname: nginx
+    networks:
+      - default
+      - app_net
     ports:
      - "80:80"  
-    
+networks:
+  app_net:
+    external: true  
+          
