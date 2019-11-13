@@ -1,6 +1,7 @@
 package com.esb.user;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,11 +22,11 @@ public interface UserService {
 	
 	public boolean updatePassword(KeyPrefix prefix,String token, long id, String formPass);
 	
-	public String login(HttpServletResponse response, LoginVo loginVo);
+	public Map<String,Object> login(LoginVo loginVo);
 	
-	public void addCookie(HttpServletResponse response, String token, User user);
+	public void addCookie(String token, User user);
 	
-    public User getByToken(HttpServletResponse response, String token);
+    public User getByToken(String token);
 	
 	
 	

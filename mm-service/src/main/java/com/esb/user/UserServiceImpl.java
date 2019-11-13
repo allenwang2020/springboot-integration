@@ -1,9 +1,8 @@
 package com.esb.user;
 
+import java.util.HashMap;
 import java.util.List;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +84,7 @@ public class UserServiceImpl implements UserService {
      */
     
     public static final String COOKIE_NAME_TOKEN = "token";
+    public static final String COOKIE_NAME_TOKEN_EXPIRE = "tokeExpire";
 
     @Cacheable(key = "#prefix.prefix + '' + #id.toString()")
     public User getById(KeyPrefix prefix ,long id) {
@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    public String login(HttpServletResponse response, LoginVo loginVo) {
+    public Map<String,Object> login(LoginVo loginVo) {
         if (loginVo == null) {
             throw new GlobalException(CodeMsg.SERVER_ERROR);
         }
@@ -128,8 +128,12 @@ public class UserServiceImpl implements UserService {
             throw new GlobalException(CodeMsg.PASSWORD_ERROR);
         }
         //生成唯一id作為token
-        String token = UUIDUtil.uuid();
-        addCookie(response, token, user);
+        String uuid = UUIDUtil.uuid();
+        int tokenExpire = UserKey.token.expireSeconds();
+        addCookie(uuid, user);
+        Map<String,Object> token = new HashMap<String,Object>();
+        token.put(COOKIE_NAME_TOKEN, uuid);
+        token.put(COOKIE_NAME_TOKEN_EXPIRE, tokenExpire);
         return token;
     }
 
@@ -138,18 +142,18 @@ public class UserServiceImpl implements UserService {
      * 同時將token存入cookie，保存登錄狀態
      */
     @CachePut(key = "#token")
-    public void addCookie(HttpServletResponse response, String token, User user) {
-        Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token);
-        cookie.setMaxAge(UserKey.token.expireSeconds());
-        cookie.setPath("/");//設置為網站根目錄
-        response.addCookie(cookie);
+    public void addCookie( String token, User user) {
+//        Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token);
+//        cookie.setMaxAge(UserKey.token.expireSeconds());
+//        cookie.setPath("/goodsList");//設置為網站根目錄
+//        response.addCookie(cookie);
     }
     
     /**
      * 根據token取得用戶訊息
      */
     @Cacheable(key =  "'userkey'.concat(#token.toString())")
-    public User getByToken(HttpServletResponse response, String token) {
+    public User getByToken(String token) {
         if (StringUtils.isEmpty(token)) {
             return null;
         }
@@ -157,7 +161,7 @@ public class UserServiceImpl implements UserService {
         User user = (User)redisUtil.get(realKey);
         //延長有效期，有效期等于最后一次操作+有效期
         if (user != null) {
-            addCookie(response, token, user);
+            addCookie(token, user);
         }
         return user;
     }

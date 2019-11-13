@@ -4,7 +4,7 @@ package com.esb.redis.key;
  */
 public class UserKey extends BasePrefix {
 
-    public static final int TOKEN_EXPIRE = 3600*24 *2;//預設兩天
+    public static final int TOKEN_EXPIRE = 172800000;//預設兩天(毫秒)
 
     /**
      * 防止被外面實體化

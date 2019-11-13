@@ -1,0 +1,18 @@
+version: '3'
+services:
+  vue-app:
+    build:
+      context: ./
+      dockerfile: vue.Dockerfile
+    image: seckill/vue-app:1.0
+    container_name: vue-app
+    hostname: vue-app
+    networks:
+      - default
+      - app_net
+    ports:
+     - "8081:8081"  
+networks:
+  app_net:
+    external: true  
+      

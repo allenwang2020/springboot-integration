@@ -8,13 +8,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esb.goods.GoodsService;
-import com.esb.redis.RedisService;
 import com.esb.redis.key.GoodsKey;
 import com.esb.result.CodeMsg;
 import com.esb.result.Result;
 import com.esb.user.User;
 import com.esb.user.UserService;
-import com.esb.vo.GoodsDetailVo;
 import com.esb.vo.GoodsVo;
 import com.esb.vo.OrderDetailVo;
 

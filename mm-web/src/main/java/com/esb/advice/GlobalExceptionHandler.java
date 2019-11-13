@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,6 +28,12 @@ public class GlobalExceptionHandler {
         if(e instanceof GlobalException) {
             GlobalException ex = (GlobalException)e;
             return Result.error(ex.getCodeMsg());
+        }else if(e instanceof MethodArgumentNotValidException) {
+        	MethodArgumentNotValidException ex = (MethodArgumentNotValidException)e;
+            List<ObjectError> errors = ex.getBindingResult().getAllErrors();//綁定錯誤返回很多錯誤，是一個錯誤列表，只需要第一個錯誤
+            ObjectError error = errors.get(0);
+            String msg = error.getDefaultMessage();
+            return Result.error(CodeMsg.BIND_ERROR.fillArgs(msg));//給狀態碼填入參數
         }else if(e instanceof BindException) {
             BindException ex = (BindException)e;
             List<ObjectError> errors = ex.getAllErrors();//綁定錯誤返回很多錯誤，是一個錯誤列表，只需要第一個錯誤
@@ -36,6 +43,7 @@ public class GlobalExceptionHandler {
         }else {
             return Result.error(CodeMsg.SERVER_ERROR);
         }
-
+        
+        
     }
 }

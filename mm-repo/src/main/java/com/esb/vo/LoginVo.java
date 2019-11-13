@@ -2,9 +2,12 @@ package com.esb.vo;
 
 import javax.validation.constraints.NotNull;
 
+import com.esb.validator.IsMobile;
+
 public class LoginVo {
+	
 	@NotNull
-    //@IsMobile  //因为框架没有校验手机格式注解，所以自己定义
+    @IsMobile  //因为框架没有校验手机格式注解，所以自己定义
     private String mobile;
 
     @NotNull
