@@ -25,14 +25,11 @@
         </td>
         <td>
              <div v-if="detail.seckillStatus === 0">
-              <span id="countDown"></span>秒</div>
+              <span id="countDown" >{{detail.remainSeconds}}</span>秒</div>
         </td>
         <td>
             <div v-if="detail.seckillStatus === 1">
-            <form id="seckillForm" method="post" action="/seckill/do_seckill">
-                <button class="btn btn-primary btn-block" type="submit" id="buyButton">立即秒殺</button>
-                <input type="hidden" name="goodsId" th:value="${goods.id}"/>
-            </form>
+               <button class="btn btn-primary btn-block" @click="doBuy">立即秒殺</button>
             </div>
         </td>
     </tr>
@@ -46,7 +43,7 @@
     </tr>
     <tr>
         <td>庫存數量</td>
-        <td colspan="3" >{{detail.goodsStock}}</td>
+        <td colspan="3" >{{detail.stockCount}}</td>
     </tr>
     </table>
     </div>
@@ -54,38 +51,62 @@
 </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data () {
     return {
       detail: {
+        goodsId: this.$route.params.data.goods.id,
         goodsDetail: this.$route.params.data.goods.goodsDetail,
         goodsImg: this.$route.params.data.goods.goodsImg,
         startDate: this.$route.params.data.goods.startDate,
         seckillStatus: this.$route.params.data.seckillStatus,
         goodsPrice: this.$route.params.data.goods.goodsPrice,
         seckillPrice: this.$route.params.data.goods.seckillPrice,
-        goodsStock: this.$route.params.data.goods.goodsStock,
+        stockCount: this.$route.params.data.goods.stockCount,
         isLogin: this.$store.getters.isLogin,
-        remainSeconds: this.$route.params.data.remainSeconds
+        remainSeconds: this.$route.params.data.remainSeconds,
+        user: this.$route.params.data.user
       }
     }
   },
+  mounted () {
+    this.countDown()
+  },
   methods: {
-    submitForm (formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
+    doBuy () {
+      axios.post('/seckill/do_seckill', this.detail.user, {
+        params: {
+          goodsId: this.detail.goodsId
         }
-      })
+        })//eslint-disable-line
+        .then(res => {
+          console.log(res)
+          if (res.status === 200) {
+          } else {
+            this.$notify({
+              title: '提示信息',
+              message: '錯誤',
+              type: 'error'
+            })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    resetForm (formName) {
-      this.$refs[formName].resetFields()
-    },
-    countDown(){
-
+    countDown () {
+      if (!this.timer) {
+        this.timer = setInterval(() => {
+          if (this.detail.remainSeconds > 0) {
+            this.detail.remainSeconds--
+            if (this.detail.remainSeconds === 0) {
+              this.detail.seckillStatus = 1
+              clearInterval(this.timer)
+            }
+          }
+        }, 1000)
+      }
     }
   }
 }

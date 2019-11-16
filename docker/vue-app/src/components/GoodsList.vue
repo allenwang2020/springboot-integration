@@ -17,7 +17,7 @@
                         <img v-bind:src="'static/'+item.goodsImg" width="100" height="100" ></td>
                         <td>{{ item.goodsPrice  }}</td>
                         <td>{{ item.seckillPrice  }}</td>
-                         <td>{{ item.stockCount  }}</td>
+                         <td>{{ item.goodsStock  }}</td>
                         <td> <el-button  class="form-control"  v-on:click="getDetail(item.id)" >Detail</el-button></td>
                     </tr>
                 </tbody>

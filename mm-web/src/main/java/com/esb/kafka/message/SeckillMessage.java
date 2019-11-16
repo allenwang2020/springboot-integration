@@ -1,10 +1,16 @@
 package com.esb.kafka.message;
 
+import java.io.Serializable;
+
 import com.esb.user.User;
 
-public class SeckillMessage {
+public class SeckillMessage  implements Serializable{
 
-    private User user;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1716078791473424842L;
+	private User user;
     private long goodsId;
 
     public User getUser() {

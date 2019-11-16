@@ -23,6 +23,8 @@ import com.esb.result.CodeMsg;
 import com.esb.result.Result;
 import com.esb.user.User;
 import com.esb.vo.GoodsVo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.util.concurrent.RateLimiter;
 
 import lombok.extern.log4j.Log4j2;
@@ -49,7 +51,7 @@ public class SeckillController implements InitializingBean{
 	    //基於令版桶算法的限流實現
 	    RateLimiter rateLimiter = RateLimiter.create(10);
 
-	    //做標記，判斷該適品是否被處理過了
+	    //做標記，判斷該商品是否被處理過了
 	    private HashMap<Long, Boolean> localOverMap = new HashMap<Long, Boolean>();
 
 	    
@@ -92,18 +94,26 @@ public class SeckillController implements InitializingBean{
 	            return Result.error(CodeMsg.REPEATE_SECKILL);
 	        }
 	        
-	        SeckillMessage message = new SeckillMessage();
-	        message.setUser(user);
-	        message.setGoodsId(goodsId);
+	        SeckillMessage seckillMessage = new SeckillMessage();
+	        seckillMessage.setUser(user);
+	        seckillMessage.setGoodsId(goodsId);
+	        ObjectMapper objectMapper = new ObjectMapper();
+	        String sendMessage = null;
+			try {
+				sendMessage = objectMapper.writeValueAsString(seckillMessage);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			log.info(sendMessage);
+	        kafkaProducer.send(sendMessage);
 			
-	        kafkaProducer.send(message);
-			
-	        return Result.success(0);//排队中
+	        return Result.success(0);//排隊中
 	    }
 	    
 	    
 	    /**
-	     * 系統初始化，將適品訊息載入到redis和記憶體
+	     * 系統初始化，將商品訊息載入到redis和記憶體
 	     */
 	    @Override
 	    public void afterPropertiesSet() {
@@ -113,7 +123,7 @@ public class SeckillController implements InitializingBean{
 	        }
 	        for (GoodsVo goods : goodsVoList) {
 	            redisService.set(GoodsKey.getGoodsStock, "" + goods.getId(), goods.getStockCount());
-	            //初始化適品都是沒有處理過的
+	            //初始化商品都是沒有處理過的
 	            localOverMap.put(goods.getId(), false);
 	        }
 	    }

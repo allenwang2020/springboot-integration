@@ -13,7 +13,7 @@ import lombok.extern.log4j.Log4j2;
 public class KafkaProducer {
 
 	@Autowired
-	private KafkaTemplate<String, Object> kafkaTemplate;
+	private KafkaTemplate<String, String> kafkaTemplate;
 	
 	@Value("${spring.kafka.topic.name}")
 	private String topicNm;
@@ -22,7 +22,7 @@ public class KafkaProducer {
 	 * 功能描述: 發送訊息
 	 * @param message
 	 */
-	public void send(Object message) {
+	public void send(String message) {
 		this.kafkaTemplate.send(topicNm, message);
 		log.debug(message);
 	}
