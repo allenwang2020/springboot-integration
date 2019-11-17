@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.esb.seckill.SeckillGoods;
 import com.esb.vo.GoodsVo;
@@ -19,7 +20,7 @@ public interface GoodsMapper {
 	public GoodsVo getGoodsVoByGoodsId(@Param("goodsId")long goodsId);
 	
 	//stock_count > 0 和 版本號實現樂觀锁 防止超賣
-	@Select("update sk_goods_seckill set stock_count = stock_count - 1, version= version + 1 where goods_id = #{goodsId} and stock_count > 0 and version = #{version}")
+	@Update("update sk_goods_seckill set stock_count = stock_count - 1, version= version + 1 where goods_id = #{goodsId} and stock_count > 0 and version = #{version}")
 	public int reduceStockByVersion(SeckillGoods seckillGoogds);
 	
 	// 獲取最新版本號

@@ -7,14 +7,14 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.esb.goods.GoodsService;
 import com.esb.redis.RedisService;
 import com.esb.redis.key.OrderKey;
 import com.esb.seckill.SeckillOrder;
-import com.esb.seckill.SeckillService;
 import com.esb.user.User;
-import com.esb.user.UserServiceImpl;
 import com.esb.vo.GoodsVo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -27,10 +27,28 @@ public class OrderServiceImpl implements OrderService{
 
     @Autowired
     RedisService redisService;
+    
+    @Autowired
+   	private ObjectMapper objectMapper;
 
 	@Override
 	public SeckillOrder getOrderByUserIdGoodsId(long userId, long goodsId) {
-		return (SeckillOrder)redisService.get(OrderKey.getSeckillOrderByUidGid, "" + userId + "_" + goodsId);
+		
+		String seckillOrderStr = null;
+		try {
+			seckillOrderStr = objectMapper.writeValueAsString(redisService.get(OrderKey.getSeckillOrderByUidGid, "" + userId + "_" + goodsId));
+		} catch (JsonProcessingException e) {
+			log.error(e.getMessage(),e);
+		}
+		SeckillOrder seckillOrder = new SeckillOrder();
+		try {
+			 seckillOrder = objectMapper.readValue(seckillOrderStr, SeckillOrder.class);
+		} catch (JsonMappingException e) {
+			log.error(e.getMessage(),e);
+		} catch (JsonProcessingException e) {
+			log.error(e.getMessage(),e);
+		}
+		return seckillOrder;
 	}
 
 	@Override

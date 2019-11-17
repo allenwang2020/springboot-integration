@@ -47,12 +47,17 @@ public class SeckillController implements InitializingBean{
 	    
 	    @Autowired
 	    KafkaProducer kafkaProducer;
+	    
+	    @Autowired
+		private ObjectMapper objectMapper;
 
 	    //基於令版桶算法的限流實現
 	    RateLimiter rateLimiter = RateLimiter.create(10);
 
 	    //做標記，判斷該商品是否被處理過了
 	    private HashMap<Long, Boolean> localOverMap = new HashMap<Long, Boolean>();
+	    
+	    
 
 	    
 	    /**
@@ -97,13 +102,11 @@ public class SeckillController implements InitializingBean{
 	        SeckillMessage seckillMessage = new SeckillMessage();
 	        seckillMessage.setUser(user);
 	        seckillMessage.setGoodsId(goodsId);
-	        ObjectMapper objectMapper = new ObjectMapper();
 	        String sendMessage = null;
 			try {
 				sendMessage = objectMapper.writeValueAsString(seckillMessage);
 			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e.getMessage(),e);
 			}
 			log.info(sendMessage);
 	        kafkaProducer.send(sendMessage);

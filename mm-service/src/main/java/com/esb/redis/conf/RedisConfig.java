@@ -22,7 +22,12 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 
 @Configuration
 @EnableCaching // Enables Spring's annotation-driven cache management capability
@@ -119,7 +124,6 @@ public class RedisConfig extends CachingConfigurerSupport {
 				Object.class);
 		ObjectMapper om = new ObjectMapper();
 		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-		//om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
 		jackson2JsonRedisSerializer.setObjectMapper(om);
 		
 		template.setKeySerializer(new StringRedisSerializer());
@@ -132,6 +136,11 @@ public class RedisConfig extends CachingConfigurerSupport {
 		return template;
 	}
 	
+	/**
+     * 通过自定义配置构建Redis的Json序列化器
+     * @return Jackson2JsonRedisSerializer对象
+     */
+   
 	@Bean
     public HashOperations<String, String, Object> hashOperations(RedisTemplate<String, Object> redisTemplate) {
         return redisTemplate.opsForHash();
