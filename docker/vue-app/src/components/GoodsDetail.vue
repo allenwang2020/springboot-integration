@@ -83,6 +83,19 @@ export default {
         .then(res => {
           console.log(res)
           if (res.status === 200) {
+            if (res.data.code === 0) {//eslint-disable-line
+              this.$notify({
+                title: '提示信息',
+                message: '下單成功',
+                type: 'success'
+              })
+            } else {
+              this.$notify({
+                title: '提示信息',
+                message: res.data.msg,
+                type: 'error'
+              })
+            }
           } else {
             this.$notify({
               title: '提示信息',
