@@ -1,8 +1,7 @@
 <template>
 <div class="panel panel-default">
 <div class="panel-body">
-    <div v-if="detail.isLogin==false">您還沒有登錄，請登錄後再操作</div>
-    <div v-else-if="detail.isLogin">
+  <div v-if="detail !== undefined">
         <div class="panel-heading">秒殺商品詳情</div>
     <table class="table" id="goodslist">
     <tr>
@@ -46,27 +45,29 @@
         <td colspan="3" >{{detail.stockCount}}</td>
     </tr>
     </table>
-    </div>
      </div>
+    </div>
 </div>
 </template>
 <script>
 import axios from 'axios'
 export default {
   data () {
-    return {
-      detail: {
-        goodsId: this.$route.params.data.goods.id,
-        goodsDetail: this.$route.params.data.goods.goodsDetail,
-        goodsImg: this.$route.params.data.goods.goodsImg,
-        startDate: this.$route.params.data.goods.startDate,
-        seckillStatus: this.$route.params.data.seckillStatus,
-        goodsPrice: this.$route.params.data.goods.goodsPrice,
-        seckillPrice: this.$route.params.data.goods.seckillPrice,
-        stockCount: this.$route.params.data.goods.stockCount,
-        isLogin: this.$store.getters.isLogin,
-        remainSeconds: this.$route.params.data.remainSeconds,
-        user: this.$route.params.data.user
+    if (this.$route.params.data !== undefined) {
+      return {
+        detail: {
+          goodsId: this.$route.params.data.goods.id,
+          goodsDetail: this.$route.params.data.goods.goodsDetail,
+          goodsImg: this.$route.params.data.goods.goodsImg,
+          startDate: this.$route.params.data.goods.startDate,
+          seckillStatus: this.$route.params.data.seckillStatus,
+          goodsPrice: this.$route.params.data.goods.goodsPrice,
+          seckillPrice: this.$route.params.data.goods.seckillPrice,
+          stockCount: this.$route.params.data.goods.stockCount,
+          isLogin: this.$store.getters.isLogin,
+          remainSeconds: this.$route.params.data.remainSeconds,
+          user: this.$route.params.data.user
+        }
       }
     }
   },
@@ -109,16 +110,20 @@ export default {
         })
     },
     countDown () {
-      if (!this.timer) {
-        this.timer = setInterval(() => {
-          if (this.detail.remainSeconds > 0) {
-            this.detail.remainSeconds--
-            if (this.detail.remainSeconds === 0) {
-              this.detail.seckillStatus = 1
-              clearInterval(this.timer)
+      if (this.detail === undefined) {
+        this.$router.push({path: '/goodsList'})
+      } else {
+        if (!this.timer) {
+          this.timer = setInterval(() => {
+            if (this.detail.remainSeconds > 0) {
+              this.detail.remainSeconds--
+              if (this.detail.remainSeconds === 0) {
+                this.detail.seckillStatus = 1
+                clearInterval(this.timer)
+              }
             }
-          }
-        }, 1000)
+          }, 1000)
+        }
       }
     }
   }

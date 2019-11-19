@@ -3,6 +3,7 @@ package com.esb.goods;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +27,22 @@ public class GoodsServiceImpl implements GoodsService{
 	public List<GoodsVo> listGoodsVo(KeyPrefix prefix ,String key) {
 		return goodsMapper.listGoodsVo();
 	}
+	
+	@Override
+	@CachePut(value = "goodsVo", key = "#prefix.prefix + '' + #key.toString()")
+	public List<GoodsVo> seckillAfterListGoodsVo(KeyPrefix prefix ,String key) {
+		return goodsMapper.listGoodsVo();
+	}
 
 	@Override
 	@Cacheable(value = "goodsVo", key = "#prefix.prefix + '' + #goodsId.toString()")
 	public GoodsVo getGoodsVoByGoodsId(KeyPrefix prefix,long goodsId) {
+		 return goodsMapper.getGoodsVoByGoodsId(goodsId);
+	}
+	
+	@Override
+	@CachePut(value = "goodsVo", key = "#prefix.prefix + '' + #goodsId.toString()")
+	public GoodsVo seckillAfterGetGoodsVoByGoodsId(KeyPrefix prefix,long goodsId) {
 		 return goodsMapper.getGoodsVoByGoodsId(goodsId);
 	}
 

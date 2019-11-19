@@ -1,5 +1,7 @@
 package com.esb.seckill;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import com.esb.goods.GoodsService;
 import com.esb.order.OrderInfo;
 import com.esb.order.OrderService;
 import com.esb.redis.RedisService;
+import com.esb.redis.key.GoodsKey;
 import com.esb.redis.key.SeckillKey;
 import com.esb.user.User;
 import com.esb.user.UserServiceImpl;
@@ -35,6 +38,11 @@ public class SeckillServiceImpl implements SeckillService{
 		//減庫存
         boolean success = goodsService.reduceStock(goods);
         if (success){
+        	//更新快取內的列表清單庫存
+        	goodsService.seckillAfterListGoodsVo(GoodsKey.getGoodsList, "");
+        	//更新快取內的商品detail庫存      	
+        	goodsService.seckillAfterGetGoodsVoByGoodsId(GoodsKey.getGoodsDetail, Long.valueOf(goods.getId()));
+ 	         
             //下訂單 寫入秒殺訂單
             return orderService.createOrder(user, goods);
         }else {
